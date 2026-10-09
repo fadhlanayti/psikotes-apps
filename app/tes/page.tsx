@@ -191,9 +191,9 @@ export default function TesPage() {
   // ==================== LOADING / ERROR ====================
   if (starting) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-slate-300">
+      <div className="flex min-h-screen items-center justify-center bg-ivory text-muted">
         <div className="text-center">
-          <div className="mb-4 h-10 w-10 animate-spin rounded-full border-2 border-slate-700 border-t-indigo-500 mx-auto" />
+          <div className="mb-4 h-10 w-10 animate-spin rounded-full border-2 border-border border-t-blue mx-auto" />
           <p>Menyiapkan sesi tes…</p>
         </div>
       </div>
@@ -202,13 +202,13 @@ export default function TesPage() {
 
   if (error) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 p-6 text-slate-300">
+      <div className="flex min-h-screen items-center justify-center bg-ivory p-6">
         <div className="max-w-md text-center">
-          <h1 className="text-2xl font-bold text-red-400">Terjadi Kesalahan</h1>
-          <p className="mt-3 text-slate-400">{error}</p>
+          <h1 className="text-2xl font-bold text-danger">Terjadi Kesalahan</h1>
+          <p className="mt-3 text-muted">{error}</p>
           <button
             onClick={() => location.reload()}
-            className="mt-6 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white hover:bg-indigo-500"
+            className="mt-6 rounded-2xl bg-blue px-6 py-3 font-semibold text-white hover:bg-accent-hover"
           >
             Muat Ulang
           </button>
@@ -233,25 +233,25 @@ export default function TesPage() {
     <LockedExam sessionId={sessionId}>
       <div className="mx-auto max-w-3xl px-6 py-10">
         {/* Progress bar */}
-        <div className="mb-6 h-1.5 w-full overflow-hidden rounded-full bg-slate-800">
+        <div className="mb-6 h-1.5 w-full overflow-hidden rounded-full bg-border">
           <div
-            className="h-full rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 transition-all duration-300"
+            className="h-full rounded-full bg-blue transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
 
         {/* Timer + nomor soal */}
         <div className="mb-8 flex items-center justify-between">
-          <div className="text-sm text-slate-400">
+          <div className="text-sm text-muted">
             Soal{" "}
-            <span className="font-bold text-slate-200">{currentIndex + 1}</span>{" "}
+            <span className="font-bold text-charcoal">{currentIndex + 1}</span>{" "}
             / {QUESTIONS.length}
           </div>
           <div
-            className={`rounded-lg px-4 py-2 font-mono text-lg font-bold transition-colors ${
+            className={`rounded-xl px-4 py-2 font-mono text-lg font-bold transition-colors ${
               timeWarning
-                ? "bg-red-900/50 text-red-300 animate-pulse"
-                : "bg-slate-800 text-indigo-300"
+                ? "bg-danger-bg text-danger border border-danger-border animate-pulse"
+                : "bg-ivory text-charcoal border border-border"
             }`}
           >
             ⏱ {mm}:{ss}
@@ -260,7 +260,7 @@ export default function TesPage() {
 
         {/* Soal */}
         <div className="mb-8">
-          <h2 className="text-xl font-semibold leading-relaxed text-slate-100">
+          <h2 className="text-xl font-semibold leading-relaxed text-charcoal">
             {q.q}
           </h2>
         </div>
@@ -273,17 +273,17 @@ export default function TesPage() {
               <button
                 key={i}
                 onClick={() => selectOption(i)}
-                className={`w-full rounded-xl border-2 px-5 py-4 text-left transition-all ${
+                className={`w-full rounded-2xl border-2 px-5 py-4 text-left transition-all ${
                   selected
-                    ? "border-indigo-500 bg-indigo-950/50 text-indigo-100"
-                    : "border-slate-800 bg-slate-900 text-slate-300 hover:border-indigo-700 hover:bg-slate-800/50"
+                    ? "border-blue bg-mint-soft text-charcoal"
+                    : "border-border bg-white text-charcoal hover:border-blue hover:bg-ivory"
                 }`}
               >
                 <span
                   className={`mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold ${
                     selected
-                      ? "bg-indigo-500 text-white"
-                      : "bg-slate-800 text-slate-400"
+                      ? "bg-blue text-white"
+                      : "bg-ivory text-muted"
                   }`}
                 >
                   {String.fromCharCode(65 + i)}
@@ -299,7 +299,7 @@ export default function TesPage() {
           <button
             onClick={prevQuestion}
             disabled={currentIndex === 0}
-            className="rounded-lg bg-slate-800 px-6 py-3 font-semibold text-slate-300 transition-colors hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-xl bg-ivory border border-border px-6 py-3 font-semibold text-charcoal transition-colors hover:bg-border disabled:cursor-not-allowed disabled:opacity-40"
           >
             ← Sebelumnya
           </button>
@@ -307,7 +307,7 @@ export default function TesPage() {
           <button
             onClick={nextQuestion}
             disabled={!isAnswered}
-            className="flex-1 rounded-lg bg-indigo-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-indigo-500 disabled:cursor-not-allowed disabled:bg-slate-800 disabled:text-slate-500"
+            className="flex-1 rounded-xl bg-blue px-6 py-3 font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-border disabled:text-muted"
           >
             {!isAnswered
               ? "Pilih Jawaban Dulu"
@@ -318,7 +318,7 @@ export default function TesPage() {
         </div>
 
         {/* Info */}
-        <p className="mt-6 text-center text-xs text-slate-600">
+        <p className="mt-6 text-center text-xs text-muted">
           🔒 Mode aman aktif — kamera merekam & tab terkunci
         </p>
       </div>

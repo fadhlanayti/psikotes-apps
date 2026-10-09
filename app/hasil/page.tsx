@@ -6,27 +6,27 @@ export default function Hasil() {
   const router = useRouter();
 
   return (
-    <main className="flex min-h-screen items-center justify-center bg-slate-950 p-6">
-      <div className="w-full max-w-lg rounded-2xl border border-slate-800 bg-slate-900 p-10 text-center text-slate-100">
-        <span className="inline-block rounded-full bg-emerald-900 px-4 py-1 text-xs font-semibold text-emerald-200">
+    <main className="flex min-h-screen items-center justify-center bg-ivory p-6">
+      <div className="w-full max-w-lg rounded-[20px] border border-border bg-white p-10 text-center shadow-[0_4px_24px_0_rgba(32,37,36,0.08)]">
+        <span className="inline-block rounded-full bg-success-bg px-4 py-1 text-xs font-semibold text-success-text border border-success-border">
           ✅ Tes Selesai
         </span>
-        <h1 className="mt-4 text-2xl font-bold">Hasil Anda</h1>
+        <h1 className="mt-4 text-2xl font-bold text-charcoal">Hasil Anda</h1>
 
         <div className="mt-8">
-          <div className="bg-gradient-to-r from-indigo-500 to-purple-500 bg-clip-text text-7xl font-extrabold text-transparent">
+          <div className="text-7xl font-extrabold text-blue">
             —
           </div>
-          <p className="mt-2 text-sm text-slate-400">Skor dari 100</p>
+          <p className="mt-2 text-sm text-muted">Skor dari 100</p>
         </div>
 
-        <p className="mt-6 text-sm text-slate-400">
+        <p className="mt-6 text-sm text-muted">
           Halaman hasil dummy. Nanti diisi skor dari API.
         </p>
 
         <button
           onClick={() => router.push("/")}
-          className="mt-6 w-full rounded-lg bg-slate-700 py-3 font-semibold text-white hover:bg-slate-600"
+          className="mt-6 w-full rounded-2xl bg-ivory border border-border py-3 font-semibold text-charcoal hover:bg-border transition-colors"
         >
           ← Kembali ke Beranda
         </button>

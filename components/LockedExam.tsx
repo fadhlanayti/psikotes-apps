@@ -241,22 +241,22 @@ export default function LockedExam({
   // ==================== RENDER ====================
   return (
     <div
-      className="min-h-screen bg-slate-950 text-slate-100"
+      className="min-h-screen bg-ivory text-charcoal"
       style={{
         userSelect: "none",
         WebkitUserSelect: "none",
       }}
     >
       {/* Header status */}
-      <div className="sticky top-0 z-50 flex items-center justify-between border-b border-slate-800 bg-slate-900/90 px-6 py-3 backdrop-blur">
-        <div className="text-sm text-slate-400">
+      <div className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-white/90 px-6 py-3 backdrop-blur">
+        <div className="text-sm text-muted">
           Sesi:{" "}
-          <span className="font-mono text-slate-200">
+          <span className="font-mono text-charcoal">
             {sessionId.slice(0, 8)}…
           </span>
         </div>
         <div className="flex items-center gap-4">
-          <div className="text-xs text-slate-500">
+          <div className="text-xs text-muted">
             📸 {photosSent} foto
           </div>
           <div className="text-sm">
@@ -264,10 +264,10 @@ export default function LockedExam({
             <span
               className={
                 violations === 0
-                  ? "text-emerald-400"
+                  ? "text-success-text font-semibold"
                   : violations === 1
-                  ? "text-yellow-400"
-                  : "text-red-400"
+                  ? "text-warning-text font-semibold"
+                  : "text-danger font-semibold"
               }
             >
               {violations}/{MAX_VIOLATIONS}
@@ -276,10 +276,10 @@ export default function LockedExam({
           <div className="flex items-center gap-2">
             <div
               className={`h-2 w-2 rounded-full ${
-                cameraReady ? "bg-emerald-500 animate-pulse" : "bg-slate-600"
+                cameraReady ? "bg-[#166534] animate-pulse" : "bg-border"
               }`}
             />
-            <span className="text-xs text-slate-500">
+            <span className="text-xs text-muted">
               {cameraReady ? "REC" : "OFF"}
             </span>
           </div>
@@ -288,7 +288,7 @@ export default function LockedExam({
 
       {/* Warning banner */}
       {warning && (
-        <div className="border-b border-red-700 bg-red-900/80 px-6 py-3 text-center text-sm font-medium text-red-100">
+        <div className="border-b border-danger-border bg-danger-bg px-6 py-3 text-center text-sm font-medium text-danger">
           ⚠️ {warning}
         </div>
       )}
@@ -304,22 +304,22 @@ export default function LockedExam({
         autoPlay
         muted
         playsInline
-        className={`fixed bottom-5 right-5 z-[9999] h-[120px] w-[160px] rounded-xl border-2 border-indigo-500 bg-black object-cover shadow-2xl ${
+        className={`fixed bottom-5 right-5 z-[9999] h-[120px] w-[160px] rounded-2xl border-2 border-blue bg-charcoal object-cover shadow-[0_4px_24px_0_rgba(8,124,240,0.2)] ${
           cameraReady ? "" : "hidden"
         }`}
       />
 
       {/* Overlay saat terkunci */}
       {locked && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/95">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-charcoal/95">
           <div className="text-center">
-            <h1 className="text-4xl font-bold text-red-500">
+            <h1 className="text-4xl font-bold text-danger">
               TERDISKUALIFIKASI
             </h1>
-            <p className="mt-3 text-slate-400">
+            <p className="mt-3 text-white/70">
               Terlalu banyak pelanggaran ({violations}/{MAX_VIOLATIONS}).
             </p>
-            <p className="mt-1 text-sm text-slate-500">
+            <p className="mt-1 text-sm text-white/50">
               Mengalihkan ke halaman hasil…
             </p>
           </div>
