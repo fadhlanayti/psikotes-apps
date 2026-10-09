@@ -1,7 +1,8 @@
-import { NextResponse } from "next/server";
+import { NextResponse, connection } from "next/server";
 import { getAllSessions } from "@/lib/store";
 
 export async function GET() {
+  await connection();
   const sessions = getAllSessions().map((s) => ({
     id: s.id,
     startedAt: s.startedAt,
