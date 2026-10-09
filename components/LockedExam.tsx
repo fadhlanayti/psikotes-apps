@@ -248,40 +248,24 @@ export default function LockedExam({
       }}
     >
       {/* Header status */}
-      <div className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-white/90 px-6 py-3 backdrop-blur">
-        <div className="text-sm text-muted">
-          Sesi:{" "}
-          <span className="font-mono text-charcoal">
-            {sessionId.slice(0, 8)}…
-          </span>
+      <div className="sticky top-0 z-50 flex items-center justify-between border-b border-border bg-white/90 px-3 sm:px-6 py-2 sm:py-3 backdrop-blur gap-2">
+        <div className="text-xs sm:text-sm text-muted truncate">
+          <span className="font-mono text-charcoal">{sessionId.slice(0, 8)}</span>
         </div>
-        <div className="flex items-center gap-4">
-          <div className="text-xs text-muted">
-            {photosSent} foto
-          </div>
-          <div className="text-sm">
-            Pelanggaran:{" "}
-            <span
-              className={
-                violations === 0
-                  ? "text-success-text font-semibold"
-                  : violations === 1
-                  ? "text-warning-text font-semibold"
-                  : "text-danger font-semibold"
-              }
-            >
+        <div className="flex items-center gap-2 sm:gap-4 shrink-0">
+          <div className="hidden sm:block text-xs text-muted">{photosSent} foto</div>
+          <div className="text-xs sm:text-sm">
+            <span className={
+              violations === 0 ? "text-success-text font-semibold"
+                : violations === 1 ? "text-warning-text font-semibold"
+                : "text-danger font-semibold"
+            }>
               {violations}/{MAX_VIOLATIONS}
             </span>
           </div>
-          <div className="flex items-center gap-2">
-            <div
-              className={`h-2 w-2 rounded-full ${
-                cameraReady ? "bg-[#166534] animate-pulse" : "bg-border"
-              }`}
-            />
-            <span className="text-xs text-muted">
-              {cameraReady ? "REC" : "OFF"}
-            </span>
+          <div className="flex items-center gap-1">
+            <div className={`h-2 w-2 rounded-full ${cameraReady ? "bg-[#166534] animate-pulse" : "bg-border"}`} />
+            <span className="text-[10px] sm:text-xs text-muted">{cameraReady ? "REC" : "OFF"}</span>
           </div>
         </div>
       </div>
@@ -304,7 +288,7 @@ export default function LockedExam({
         autoPlay
         muted
         playsInline
-        className={`fixed bottom-5 right-5 z-[9999] h-[120px] w-[160px] rounded-2xl border-2 border-blue bg-charcoal object-cover shadow-[0_4px_24px_0_rgba(8,124,240,0.2)] ${
+        className={`fixed bottom-3 right-3 z-[9999] h-[72px] w-[96px] sm:h-[120px] sm:w-[160px] rounded-xl sm:rounded-2xl border-2 border-blue bg-charcoal object-cover shadow-[0_4px_24px_0_rgba(8,124,240,0.2)] ${
           cameraReady ? "" : "hidden"
         }`}
       />

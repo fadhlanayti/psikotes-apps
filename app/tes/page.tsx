@@ -271,17 +271,15 @@ export default function TesPage() {
 
   return (
     <LockedExam sessionId={sessionId}>
-      <div className="mx-auto max-w-xl px-6 py-10">
-        {/* Progress */}
+      <div className="mx-auto max-w-xl px-4 sm:px-6 py-6 sm:py-10">
+        {/* Progress + timer */}
         <div className="mb-1 flex items-center justify-between text-xs text-muted">
-          <span>Soal {currentIndex + 1} dari {QUESTIONS.length}</span>
-          <span
-            className={`font-mono font-semibold ${timeWarning ? "text-danger animate-pulse" : "text-charcoal"}`}
-          >
+          <span>Soal {currentIndex + 1} / {QUESTIONS.length}</span>
+          <span className={`font-mono font-semibold ${timeWarning ? "text-danger animate-pulse" : "text-charcoal"}`}>
             {mm}:{ss}
           </span>
         </div>
-        <div className="mb-8 h-1 w-full overflow-hidden rounded-full bg-border">
+        <div className="mb-6 sm:mb-8 h-1.5 w-full overflow-hidden rounded-full bg-border">
           <div
             className="h-full rounded-full bg-blue transition-all duration-300"
             style={{ width: `${progress}%` }}
@@ -289,29 +287,27 @@ export default function TesPage() {
         </div>
 
         {/* Soal */}
-        <h2 className="mb-6 text-lg font-semibold leading-relaxed text-charcoal">
+        <h2 className="mb-5 sm:mb-6 text-base sm:text-lg font-semibold leading-relaxed text-charcoal">
           {q.q}
         </h2>
 
         {/* Pilihan */}
         <div className="space-y-2.5">
           {q.options.map((opt, i) => {
-            const selected = answers[currentIndex] === i;
+            const sel = answers[currentIndex] === i;
             return (
               <button
                 key={i}
                 onClick={() => selectOption(i)}
                 className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3.5 text-left text-sm transition-all ${
-                  selected
+                  sel
                     ? "border-blue bg-[#EBF4FF] text-charcoal"
                     : "border-border bg-white text-charcoal hover:border-blue/40 hover:bg-ivory"
                 }`}
               >
-                <span
-                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                    selected ? "bg-blue text-white" : "bg-ivory text-muted"
-                  }`}
-                >
+                <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                  sel ? "bg-blue text-white" : "bg-ivory text-muted"
+                }`}>
                   {String.fromCharCode(65 + i)}
                 </span>
                 {opt}
@@ -321,21 +317,20 @@ export default function TesPage() {
         </div>
 
         {/* Navigasi */}
-        <div className="mt-6 flex gap-2">
+        <div className="mt-5 sm:mt-6 flex gap-2">
           <button
             onClick={prevQuestion}
             disabled={currentIndex === 0}
-            className="rounded-xl border border-border bg-white px-5 py-3 text-sm font-semibold text-charcoal transition-colors hover:bg-ivory disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-xl border border-border bg-white px-4 sm:px-5 py-3 text-sm font-semibold text-charcoal transition-colors hover:bg-ivory disabled:cursor-not-allowed disabled:opacity-40"
           >
             Sebelumnya
           </button>
-
           <button
             onClick={nextQuestion}
             disabled={!isAnswered}
             className="flex-1 rounded-xl bg-blue py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-border disabled:text-muted"
           >
-            {!isAnswered ? "Pilih jawaban dulu" : isLast ? "Selesai & Lihat Hasil" : "Lanjut"}
+            {!isAnswered ? "Pilih jawaban" : isLast ? "Selesai & Lihat Hasil" : "Lanjut"}
           </button>
         </div>
       </div>

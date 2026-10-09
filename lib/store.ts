@@ -1,38 +1,11 @@
 // lib/store.ts
-// ponytail: better-sqlite3 is synchronous — fine for low-concurrency VPS.
-//           Swap to Postgres/Prisma if concurrent load becomes an issue.
+// ponytail: JSON file store — zero native deps, persists on disk.
+//           Swap to SQLite/Postgres if concurrent writes cause corruption (unlikely for low-concurrency VPS).
 
-import Database from "better-sqlite3";
+import fs from "fs";
 import path from "path";
 
-// ponytail: globalThis prevents Next.js from creating multiple DB connections
-const globalForDb = globalThis as unknown as { __psikotesDb?: ReturnType<typeof Database> };
-const db = globalForDb.__psikotesDb ??= new Database(path.join(process.cwd(), "psikotes.db"));
-
-db.exec(`
-  CREATE TABLE IF NOT EXISTS sessions (
-    id TEXT PRIMARY KEY,
-    started_at INTEGER NOT NULL,
-    submitted_at INTEGER,
-    forced INTEGER NOT NULL DEFAULT 0,
-    disqualified INTEGER NOT NULL DEFAULT 0,
-    answers TEXT,
-    last_heartbeat INTEGER NOT NULL
-  );
-  CREATE TABLE IF NOT EXISTS violations (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    session_id TEXT NOT NULL REFERENCES sessions(id),
-    type TEXT NOT NULL,
-    count INTEGER NOT NULL,
-    timestamp INTEGER NOT NULL
-  );
-  CREATE TABLE IF NOT EXISTS captures (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    session_id TEXT NOT NULL REFERENCES sessions(id),
-    timestamp INTEGER NOT NULL,
-    data_url TEXT NOT NULL
-  );
-`);
+const DB_PATH = path.join(process.cwd(), "psikotes.json");
 
 export interface Violation {
   type: string;
@@ -57,63 +30,57 @@ export interface Session {
   lastHeartbeat: number;
 }
 
-function toSession(
-  row: Record<string, unknown>,
-  violations: Violation[],
-  captures: Capture[]
-): Session {
-  return {
-    id: row.id as string,
-    startedAt: row.started_at as number,
-    submittedAt: (row.submitted_at as number | null) ?? null,
-    forced: !!(row.forced as number),
-    disqualified: !!(row.disqualified as number),
-    answers: row.answers ? JSON.parse(row.answers as string) : null,
-    lastHeartbeat: row.last_heartbeat as number,
-    violations,
-    captures,
-  };
+type DB = { sessions: Record<string, Session> };
+
+function read(): DB {
+  try {
+    return JSON.parse(fs.readFileSync(DB_PATH, "utf8"));
+  } catch {
+    return { sessions: {} };
+  }
+}
+
+function write(db: DB) {
+  fs.writeFileSync(DB_PATH, JSON.stringify(db), "utf8");
 }
 
 export function createSession(id: string): Session {
   const now = Date.now();
-  db.prepare(
-    `INSERT INTO sessions (id, started_at, last_heartbeat) VALUES (?, ?, ?)`
-  ).run(id, now, now);
-  return { id, startedAt: now, submittedAt: null, forced: false, disqualified: false, answers: null, violations: [], captures: [], lastHeartbeat: now };
+  const session: Session = {
+    id, startedAt: now, submittedAt: null,
+    forced: false, disqualified: false,
+    answers: null, violations: [], captures: [],
+    lastHeartbeat: now,
+  };
+  const db = read();
+  db.sessions[id] = session;
+  write(db);
+  return session;
 }
 
 export function getSession(id: string): Session | undefined {
-  const row = db.prepare(`SELECT * FROM sessions WHERE id = ?`).get(id) as Record<string, unknown> | undefined;
-  if (!row) return undefined;
-  const violations = db.prepare(`SELECT type, count, timestamp FROM violations WHERE session_id = ? ORDER BY timestamp`).all(id) as Violation[];
-  const captures = db.prepare(`SELECT timestamp, data_url as dataUrl FROM captures WHERE session_id = ? ORDER BY timestamp`).all(id) as Capture[];
-  return toSession(row, violations, captures);
+  return read().sessions[id];
 }
 
 export function getAllSessions(): Session[] {
-  const rows = db.prepare(`SELECT * FROM sessions ORDER BY started_at DESC`).all() as Record<string, unknown>[];
-  return rows.map((row) => {
-    const id = row.id as string;
-    const violations = db.prepare(`SELECT type, count, timestamp FROM violations WHERE session_id = ? ORDER BY timestamp`).all(id) as Violation[];
-    // ponytail: last 30 captures per session. Add pagination if storage grows large.
-    const captures = db.prepare(`SELECT timestamp, data_url as dataUrl FROM captures WHERE session_id = ? ORDER BY timestamp DESC LIMIT 30`).all(id) as Capture[];
-    return toSession(row, violations, captures.reverse());
-  });
+  const db = read();
+  return Object.values(db.sessions).sort((a, b) => b.startedAt - a.startedAt);
 }
 
 export function addViolation(id: string, type: string, count: number) {
-  db.prepare(`INSERT INTO violations (session_id, type, count, timestamp) VALUES (?, ?, ?, ?)`).run(id, type, count, Date.now());
+  const db = read();
+  db.sessions[id]?.violations.push({ type, count, timestamp: Date.now() });
+  write(db);
 }
 
 export function addCapture(id: string, dataUrl: string) {
-  db.prepare(`INSERT INTO captures (session_id, timestamp, data_url) VALUES (?, ?, ?)`).run(id, Date.now(), dataUrl);
-  // keep last 30
-  db.prepare(`
-    DELETE FROM captures WHERE session_id = ? AND id NOT IN (
-      SELECT id FROM captures WHERE session_id = ? ORDER BY timestamp DESC LIMIT 30
-    )
-  `).run(id, id);
+  const db = read();
+  const s = db.sessions[id];
+  if (!s) return;
+  s.captures.push({ timestamp: Date.now(), dataUrl });
+  // ponytail: keep last 30 per session, O(n) shift fine at this scale
+  if (s.captures.length > 30) s.captures = s.captures.slice(-30);
+  write(db);
 }
 
 export function submitSession(
@@ -122,11 +89,18 @@ export function submitSession(
   forced: boolean,
   reason?: string
 ) {
-  db.prepare(`
-    UPDATE sessions SET submitted_at = ?, answers = ?, forced = ?, disqualified = ? WHERE id = ?
-  `).run(Date.now(), answers ? JSON.stringify(answers) : null, forced ? 1 : 0, reason === "max_violations" ? 1 : 0, id);
+  const db = read();
+  const s = db.sessions[id];
+  if (!s) return;
+  s.submittedAt = Date.now();
+  s.answers = answers ?? s.answers;
+  s.forced = forced;
+  if (reason === "max_violations") s.disqualified = true;
+  write(db);
 }
 
 export function heartbeat(id: string) {
-  db.prepare(`UPDATE sessions SET last_heartbeat = ? WHERE id = ?`).run(Date.now(), id);
+  const db = read();
+  if (db.sessions[id]) db.sessions[id].lastHeartbeat = Date.now();
+  write(db);
 }
