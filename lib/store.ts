@@ -5,7 +5,9 @@
 import Database from "better-sqlite3";
 import path from "path";
 
-const db = new Database(path.join(process.cwd(), "psikotes.db"));
+// ponytail: globalThis prevents Next.js from creating multiple DB connections
+const globalForDb = globalThis as unknown as { __psikotesDb?: ReturnType<typeof Database> };
+const db = globalForDb.__psikotesDb ??= new Database(path.join(process.cwd(), "psikotes.db"));
 
 db.exec(`
   CREATE TABLE IF NOT EXISTS sessions (
