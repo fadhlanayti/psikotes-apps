@@ -9,72 +9,112 @@ import LockedExam from "@/components/LockedExam";
 const QUESTIONS = [
   {
     id: 1,
-    q: "Lanjutkan pola berikut: 2, 4, 8, 16, ...",
-    options: ["20", "24", "32", "36"],
-    answer: 2,
-  },
-  {
-    id: 2,
-    q: "Jika A > B dan B > C, maka...",
-    options: ["A < C", "A = C", "A > C", "Tidak dapat ditentukan"],
-    answer: 2,
-  },
-  {
-    id: 3,
-    q: "Lanjutkan pola: 1, 4, 9, 16, ...",
-    options: ["20", "25", "30", "36"],
+    q: "Lanjutkan deret: 2, 6, 18, 54, ...",
+    options: ["108", "162", "148", "172"],
     answer: 1,
   },
   {
-    id: 4,
-    q: "Semua kucing adalah hewan. Semua hewan butuh makan. Maka...",
+    id: 2,
+    q: "Semua dokter adalah lulusan universitas. Andi adalah lulusan universitas. Maka...",
     options: [
-      "Semua kucing butuh makan",
-      "Semua hewan adalah kucing",
-      "Sebagian kucing tidak butuh makan",
-      "Tidak dapat disimpulkan",
+      "Andi pasti seorang dokter",
+      "Andi mungkin seorang dokter",
+      "Andi bukan dokter",
+      "Tidak ada hubungan",
     ],
-    answer: 0,
+    answer: 1,
   },
   {
-    id: 5,
-    q: "Lanjutkan pola: 3, 6, 12, 24, ...",
-    options: ["30", "36", "48", "52"],
+    id: 3,
+    q: "Lanjutkan deret: 1, 1, 2, 3, 5, 8, ...",
+    options: ["11", "12", "13", "14"],
     answer: 2,
   },
   {
+    id: 4,
+    q: "Jika KUCING = 11, ANJING = 12, maka KELINCI = ?",
+    options: ["13", "14", "15", "7"],
+    answer: 1,
+  },
+  {
+    id: 5,
+    q: "Seorang pria menunjuk foto dan berkata: 'Ayah dari orang itu adalah anak dari ayah saya.' Siapakah orang di foto itu?",
+    options: [
+      "Dirinya sendiri",
+      "Ayahnya",
+      "Kakeknya",
+      "Anaknya",
+    ],
+    answer: 3,
+  },
+  {
     id: 6,
-    q: "Jika hari ini Rabu, 3 hari lagi hari apa?",
-    options: ["Jumat", "Sabtu", "Minggu", "Senin"],
+    q: "Lanjutkan deret: 4, 9, 16, 25, ...",
+    options: ["30", "36", "49", "64"],
     answer: 1,
   },
   {
     id: 7,
-    q: "Lanjutkan pola: 5, 10, 20, 40, ...",
-    options: ["60", "70", "80", "100"],
-    answer: 2,
+    q: "Panas : Dingin = Tinggi : ?",
+    options: ["Besar", "Pendek", "Kecil", "Lebar"],
+    answer: 1,
   },
   {
     id: 8,
-    q: "Andi lebih tinggi dari Budi. Budi lebih tinggi dari Cici. Siapa paling pendek?",
-    options: ["Andi", "Budi", "Cici", "Tidak dapat ditentukan"],
+    q: "Dari 5 orang (P, Q, R, S, T): P lebih tua dari Q, R lebih muda dari Q, S lebih tua dari P, T lebih muda dari R. Siapa yang paling muda?",
+    options: ["Q", "R", "T", "P"],
     answer: 2,
   },
   {
     id: 9,
-    q: "Lanjutkan pola: 100, 90, 81, 73, ...",
-    options: ["65", "66", "67", "68"],
-    answer: 1,
+    q: "Jika hari ini Kamis, 45 hari lagi hari apa?",
+    options: ["Senin", "Selasa", "Rabu", "Jumat"],
+    answer: 2,
   },
   {
     id: 10,
-    q: "Jika 5 mesin membuat 5 produk dalam 5 menit, berapa menit 100 mesin membuat 100 produk?",
-    options: ["5 menit", "20 menit", "100 menit", "1 menit"],
-    answer: 0,
+    q: "Sebuah jam menunjukkan pukul 15:00. Berapa derajat sudut antara jarum jam dan jarum menit?",
+    options: ["60", "90", "120", "180"],
+    answer: 1,
+  },
+  {
+    id: 11,
+    q: "Lanjutkan deret: 3, 7, 15, 31, ...",
+    options: ["47", "55", "63", "59"],
+    answer: 2,
+  },
+  {
+    id: 12,
+    q: "Tidak semua burung bisa terbang. Penguin adalah burung. Maka...",
+    options: [
+      "Penguin pasti bisa terbang",
+      "Penguin tidak bisa terbang",
+      "Penguin belum tentu bisa terbang",
+      "Tidak dapat disimpulkan",
+    ],
+    answer: 2,
+  },
+  {
+    id: 13,
+    q: "Jika A = 1, B = 2, C = 3, dst. Maka BACA = ?",
+    options: ["6", "7", "8", "9"],
+    answer: 1,
+  },
+  {
+    id: 14,
+    q: "Sebuah tali dilipat menjadi 4 lalu dipotong di tengah. Berapa banyak potongan tali yang dihasilkan?",
+    options: ["4", "5", "8", "9"],
+    answer: 1,
+  },
+  {
+    id: 15,
+    q: "Rudi berlari lebih cepat dari Susi. Toni berlari lebih lambat dari Susi tapi lebih cepat dari Budi. Siapa yang paling lambat?",
+    options: ["Rudi", "Susi", "Toni", "Budi"],
+    answer: 3,
   },
 ];
 
-const TEST_DURATION_SECONDS = 300; // 5 menit
+const TEST_DURATION_SECONDS = 600; // 10 menit untuk 15 soal
 
 // ==================== KOMPONEN ====================
 export default function TesPage() {
@@ -231,59 +271,45 @@ export default function TesPage() {
 
   return (
     <LockedExam sessionId={sessionId}>
-      <div className="mx-auto max-w-3xl px-6 py-10">
-        {/* Progress bar */}
-        <div className="mb-6 h-1.5 w-full overflow-hidden rounded-full bg-border">
+      <div className="mx-auto max-w-xl px-6 py-10">
+        {/* Progress */}
+        <div className="mb-1 flex items-center justify-between text-xs text-muted">
+          <span>Soal {currentIndex + 1} dari {QUESTIONS.length}</span>
+          <span
+            className={`font-mono font-semibold ${timeWarning ? "text-danger animate-pulse" : "text-charcoal"}`}
+          >
+            {mm}:{ss}
+          </span>
+        </div>
+        <div className="mb-8 h-1 w-full overflow-hidden rounded-full bg-border">
           <div
             className="h-full rounded-full bg-blue transition-all duration-300"
             style={{ width: `${progress}%` }}
           />
         </div>
 
-        {/* Timer + nomor soal */}
-        <div className="mb-8 flex items-center justify-between">
-          <div className="text-sm text-muted">
-            Soal{" "}
-            <span className="font-bold text-charcoal">{currentIndex + 1}</span>{" "}
-            / {QUESTIONS.length}
-          </div>
-          <div
-            className={`rounded-xl px-4 py-2 font-mono text-lg font-bold transition-colors ${
-              timeWarning
-                ? "bg-danger-bg text-danger border border-danger-border animate-pulse"
-                : "bg-ivory text-charcoal border border-border"
-            }`}
-          >
-            ⏱ {mm}:{ss}
-          </div>
-        </div>
-
         {/* Soal */}
-        <div className="mb-8">
-          <h2 className="text-xl font-semibold leading-relaxed text-charcoal">
-            {q.q}
-          </h2>
-        </div>
+        <h2 className="mb-6 text-lg font-semibold leading-relaxed text-charcoal">
+          {q.q}
+        </h2>
 
         {/* Pilihan */}
-        <div className="space-y-3">
+        <div className="space-y-2.5">
           {q.options.map((opt, i) => {
             const selected = answers[currentIndex] === i;
             return (
               <button
                 key={i}
                 onClick={() => selectOption(i)}
-                className={`w-full rounded-2xl border-2 px-5 py-4 text-left transition-all ${
+                className={`flex w-full items-center gap-3 rounded-xl border px-4 py-3.5 text-left text-sm transition-all ${
                   selected
-                    ? "border-blue bg-mint-soft text-charcoal"
-                    : "border-border bg-white text-charcoal hover:border-blue hover:bg-ivory"
+                    ? "border-blue bg-[#EBF4FF] text-charcoal"
+                    : "border-border bg-white text-charcoal hover:border-blue/40 hover:bg-ivory"
                 }`}
               >
                 <span
-                  className={`mr-3 inline-flex h-7 w-7 items-center justify-center rounded-full text-sm font-bold ${
-                    selected
-                      ? "bg-blue text-white"
-                      : "bg-ivory text-muted"
+                  className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                    selected ? "bg-blue text-white" : "bg-ivory text-muted"
                   }`}
                 >
                   {String.fromCharCode(65 + i)}
@@ -295,32 +321,23 @@ export default function TesPage() {
         </div>
 
         {/* Navigasi */}
-        <div className="mt-8 flex gap-3">
+        <div className="mt-6 flex gap-2">
           <button
             onClick={prevQuestion}
             disabled={currentIndex === 0}
-            className="rounded-xl bg-ivory border border-border px-6 py-3 font-semibold text-charcoal transition-colors hover:bg-border disabled:cursor-not-allowed disabled:opacity-40"
+            className="rounded-xl border border-border bg-white px-5 py-3 text-sm font-semibold text-charcoal transition-colors hover:bg-ivory disabled:cursor-not-allowed disabled:opacity-40"
           >
-            ← Sebelumnya
+            Sebelumnya
           </button>
 
           <button
             onClick={nextQuestion}
             disabled={!isAnswered}
-            className="flex-1 rounded-xl bg-blue px-6 py-3 font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-border disabled:text-muted"
+            className="flex-1 rounded-xl bg-blue py-3 text-sm font-semibold text-white transition-colors hover:bg-accent-hover disabled:cursor-not-allowed disabled:bg-border disabled:text-muted"
           >
-            {!isAnswered
-              ? "Pilih Jawaban Dulu"
-              : isLast
-              ? "Selesai & Lihat Hasil"
-              : "Lanjut →"}
+            {!isAnswered ? "Pilih jawaban dulu" : isLast ? "Selesai & Lihat Hasil" : "Lanjut"}
           </button>
         </div>
-
-        {/* Info */}
-        <p className="mt-6 text-center text-xs text-muted">
-          🔒 Mode aman aktif — kamera merekam & tab terkunci
-        </p>
       </div>
     </LockedExam>
   );

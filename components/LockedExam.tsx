@@ -257,7 +257,7 @@ export default function LockedExam({
         </div>
         <div className="flex items-center gap-4">
           <div className="text-xs text-muted">
-            📸 {photosSent} foto
+            {photosSent} foto
           </div>
           <div className="text-sm">
             Pelanggaran:{" "}
@@ -289,7 +289,7 @@ export default function LockedExam({
       {/* Warning banner */}
       {warning && (
         <div className="border-b border-danger-border bg-danger-bg px-6 py-3 text-center text-sm font-medium text-danger">
-          ⚠️ {warning}
+          {warning}
         </div>
       )}
 

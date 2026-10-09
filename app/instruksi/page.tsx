@@ -8,48 +8,57 @@ export default function Instruksi() {
   const [consent, setConsent] = useState(false);
 
   async function mulai() {
-    // Minta izin kamera dulu
     try {
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-      stream.getTracks().forEach(t => t.stop()); // stop dulu, nanti dinyalakan di /tes
+      stream.getTracks().forEach(t => t.stop());
       router.push("/tes");
     } catch {
-      alert("❌ Akses kamera wajib diizinkan untuk mengikuti tes ini.");
+      alert("Akses kamera wajib diizinkan untuk mengikuti tes ini.");
     }
   }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-ivory p-6">
-      <div className="w-full max-w-2xl rounded-[20px] border border-border bg-white p-8 shadow-[0_4px_24px_0_rgba(32,37,36,0.08)]">
-        <h1 className="text-2xl font-bold text-charcoal">📋 Instruksi & Persetujuan</h1>
+      <div className="w-full max-w-md rounded-[20px] bg-white p-8 shadow-[0_2px_16px_0_rgba(32,37,36,0.06)]">
+        <h1 className="text-2xl font-bold text-charcoal">Instruksi</h1>
+        <p className="mt-1 text-sm text-muted">Baca sebelum memulai tes.</p>
 
-        <div className="mt-6 space-y-2 rounded-2xl border-l-4 border-blue bg-ivory p-5 text-sm text-muted">
-          <p>1. Tes terdiri dari <b className="text-charcoal">10 soal</b> pilihan ganda.</p>
-          <p>2. Durasi <b className="text-charcoal">5 menit</b>, timer otomatis.</p>
-          <p>3. <b className="text-charcoal">Kamera wajib aktif</b> selama tes.</p>
-          <p>4. <b className="text-charcoal">Fullscreen wajib</b> — keluar = pelanggaran.</p>
-          <p>5. <b className="text-charcoal">Pindah tab</b> = pelanggaran.</p>
-          <p>6. Maksimal <b className="text-charcoal">3 pelanggaran</b> → diskualifikasi.</p>
-        </div>
+        <ul className="mt-5 space-y-2.5 text-sm text-charcoal">
+          {[
+            "15 soal pilihan ganda.",
+            "Durasi 10 menit, timer otomatis.",
+            "Kamera wajib aktif selama tes.",
+            "Keluar fullscreen dihitung pelanggaran.",
+            "Pindah tab dihitung pelanggaran.",
+            "Maksimal 3 pelanggaran sebelum diskualifikasi.",
+          ].map((rule, i) => (
+            <li key={i} className="flex items-start gap-3">
+              <span className="mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue text-[11px] font-bold text-white">
+                {i + 1}
+              </span>
+              <span className="text-charcoal">{rule}</span>
+            </li>
+          ))}
+        </ul>
 
         <label className="mt-6 flex cursor-pointer items-start gap-3 text-sm text-charcoal">
           <input
             type="checkbox"
             checked={consent}
             onChange={(e) => setConsent(e.target.checked)}
-            className="mt-1 h-4 w-4 accent-blue"
+            className="mt-0.5 h-4 w-4 accent-blue"
           />
-          <span>
-            Saya menyetujui kamera saya aktif dan foto diambil setiap detik selama tes berlangsung.
+          <span className="text-muted">
+            Saya menyetujui kamera aktif dan foto diambil setiap detik selama tes.
           </span>
         </label>
 
         <button
           disabled={!consent}
           onClick={mulai}
-          className="mt-6 w-full rounded-2xl bg-blue py-3 font-semibold text-white shadow-[0_2px_12px_0_rgba(8,124,240,0.25)] transition-all disabled:bg-border disabled:text-muted disabled:shadow-none hover:enabled:bg-accent-hover"
+          className="mt-5 w-full rounded-xl bg-blue py-3 text-sm font-semibold text-white transition-colors disabled:bg-border disabled:text-muted disabled:shadow-none hover:enabled:bg-accent-hover"
         >
-          Aktifkan Kamera & Mulai Tes →
+          Aktifkan Kamera & Mulai Tes
         </button>
       </div>
     </main>
